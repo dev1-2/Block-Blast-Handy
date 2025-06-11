@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Block Blast Mobile</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <h1>Block Blast</h1>
+            <div class="score-container">
+                <div id="score">Score: 0</div>
+                <div id="high-score">High Score: 0</div>
+            </div>
+        </header>
+
+        <main>
+            <div class="game-area">
+                <div id="grid" class="grid"></div>
+                
+                <div class="shape-tray">
+                    <h2>Available Shapes</h2>
+                    <div id="shape-selection" class="shape-selection"></div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button id="reset" class="btn primary-btn">Reset Game</button>
+                <button id="help" class="btn secondary-btn">How to Play</button>
+            </div>
+        </main>
+
+        <div id="end-screen" class="modal">
+            <div class="modal-content">
+                <h2>Game Over!</h2>
+                <div id="end-message">Your Score: 0</div>
+                <div class="modal-buttons">
+                    <button id="restart" class="btn primary-btn">Play Again</button>
+                    <button id="share" class="btn secondary-btn">Share Score</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="help-modal" class="modal">
+            <div class="modal-content">
+                <h2>How to Play</h2>
+                <div class="instructions">
+                    <p>1. Drag a shape from the bottom tray</p>
+                    <p>2. Drop it onto the grid where you want to place it</p>
+                    <p>3. Complete rows or columns to clear them</p>
+                    <p>4. Game ends when no more shapes can be placed</p>
+                    <p>5. Try to get the highest score possible!</p>
+                </div>
+                <div class="modal-buttons">
+                    <button id="close-help" class="btn primary-btn">Got it!</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="level-up" class="level-up">
+            <div class="level-up-content">
+                <h2>Level Up!</h2>
+                <div class="stars">
+                    <span>★</span><span>★</span><span>★</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Draggable ghost element for preview -->
+        <div id="drag-ghost" class="drag-ghost"></div>
+
+        <div class="particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
