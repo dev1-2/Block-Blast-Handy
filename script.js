@@ -31,6 +31,8 @@ let currentDragShape = null;
 let currentDragColor = '';
 let touchOffsetX = 0;
 let touchOffsetY = 0;
+let lastTouchTime = 0; // To detect double taps
+let isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 // All possible shapes with their variations
 const allShapes = [
@@ -207,6 +209,18 @@ function setupTouchEvents(element, shapeData) {
     element.addEventListener('touchstart', (e) => {
         if (!gameActive) return;
         
+        // Check for double tap (for mobile devices)
+        const now = new Date().getTime();
+        const timeSince = now - lastTouchTime;
+        
+        if (timeSince < 300 && timeSince > 0) {
+            // Double tap detected - prevent zoom
+            e.preventDefault();
+            return;
+        }
+        
+        lastTouchTime = now;
+        
         // Prevent default to avoid scrolling
         e.preventDefault();
         
@@ -285,7 +299,8 @@ function setupTouchEvents(element, shapeData) {
             const row = Math.floor(relY / cellHeight);
             
             if (row >= 0 && row < GRID_SIZE && col >= 0 && col < GRID_SIZE) {
-                placeShape(row, col);
+                const success = placeShape(row, col);
+                addHapticFeedback(success);
             }
         }
         
@@ -555,6 +570,11 @@ function checkForClears() {
         // Highlight the rows and columns that will be cleared
         highlightClearedLines(clearedRows, clearedCols);
         
+        // Add haptic feedback for line clear
+        if (isMobileDevice) {
+            vibrateDevice(100);
+        }
+        
         // Wait a moment to show the highlight before clearing
         setTimeout(() => {
             // Clear the rows
@@ -615,6 +635,7 @@ function updateScore(points) {
     if (score > highScore) {
         highScore = score;
         localStorage.setItem('blockBlastHighScore', highScore);
+        highScoreDisplay.textContent = `High Score: ${highScore}`;
     }
 }
 
@@ -631,6 +652,11 @@ function checkLevelUp() {
 // Show level up animation
 function showLevelUp() {
     levelUpElement.classList.add('active');
+    
+    // Add haptic feedback for level up
+    if (isMobileDevice) {
+        vibrateDevice([100, 50, 100]);
+    }
     
     setTimeout(() => {
         levelUpElement.classList.remove('active');
@@ -665,6 +691,11 @@ function endGame() {
     gameActive = false;
     endMessage.textContent = `Your Score: ${score}`;
     endScreen.classList.add('active');
+    
+    // Add haptic feedback for game over
+    if (isMobileDevice) {
+        vibrateDevice([100, 50, 100, 50, 200]);
+    }
 }
 
 // Setup grid for drag and drop
@@ -709,7 +740,10 @@ function setupGridDropEvents() {
         const row = Math.floor(relY / cellHeight);
         
         if (row >= 0 && row < GRID_SIZE && col >= 0 && col < GRID_SIZE) {
-            placeShape(row, col);
+            const success = placeShape(row, col);
+            if (isMobileDevice) {
+                addHapticFeedback(success);
+            }
         }
     });
 }
@@ -718,37 +752,6 @@ function setupGridDropEvents() {
 document.addEventListener('mousemove', (e) => {
     if (isDragging && dragGhost.style.display === 'block') {
         updateDragGhostPosition(e.clientX, e.clientY);
-    }
-});
-
-// Event listeners for buttons
-resetButton.addEventListener('click', () => {
-    initGame();
-});
-
-restartButton.addEventListener('click', () => {
-    initGame();
-});
-
-helpButton.addEventListener('click', () => {
-    helpModal.classList.add('active');
-});
-
-closeHelpButton.addEventListener('click', () => {
-    helpModal.classList.remove('active');
-});
-
-shareButton.addEventListener('click', () => {
-    if (navigator.share) {
-        navigator.share({
-            title: 'Block Blast',
-            text: `I scored ${score} points in Block Blast! Can you beat my score?`,
-            url: window.location.href
-        }).catch(console.error);
-    } else {
-        // Fallback for browsers that don't support Web Share API
-        const shareText = `I scored ${score} points in Block Blast!`;
-        alert(shareText);
     }
 });
 
@@ -768,6 +771,43 @@ function addHapticFeedback(success) {
     }
 }
 
+// Event listeners for buttons
+resetButton.addEventListener('click', () => {
+    initGame();
+    if (isMobileDevice) vibrateDevice(20);
+});
+
+restartButton.addEventListener('click', () => {
+    initGame();
+    if (isMobileDevice) vibrateDevice(20);
+});
+
+helpButton.addEventListener('click', () => {
+    helpModal.classList.add('active');
+    if (isMobileDevice) vibrateDevice(20);
+});
+
+closeHelpButton.addEventListener('click', () => {
+    helpModal.classList.remove('active');
+    if (isMobileDevice) vibrateDevice(20);
+});
+
+shareButton.addEventListener('click', () => {
+    if (isMobileDevice) vibrateDevice(20);
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'Block Blast',
+            text: `I scored ${score} points in Block Blast! Can you beat my score?`,
+            url: window.location.href
+        }).catch(console.error);
+    } else {
+        // Fallback for browsers that don't support Web Share API
+        const shareText = `I scored ${score} points in Block Blast!`;
+        alert(shareText);
+    }
+});
+
 // Prevent zooming on double tap for mobile
 document.addEventListener('dblclick', (e) => {
     e.preventDefault();
@@ -786,7 +826,23 @@ window.addEventListener('orientationchange', () => {
     setTimeout(() => {
         createGrid();
         renderShapes();
-    }, 200);
+    }, 300);
+});
+
+// Adjust for screen size changes
+window.addEventListener('resize', () => {
+    // Redraw the grid after resize
+    setTimeout(() => {
+        createGrid();
+    }, 300);
+});
+
+// Prevent context menu on long press for mobile
+document.addEventListener('contextmenu', (e) => {
+    if (isMobileDevice) {
+        e.preventDefault();
+        return false;
+    }
 });
 
 // Initialize the game
@@ -805,6 +861,32 @@ function init() {
     if (!localStorage.getItem('blockBlastTutorialSeen')) {
         helpModal.classList.add('active');
         localStorage.setItem('blockBlastTutorialSeen', 'true');
+    }
+    
+    // Add fullscreen button for mobile
+    if (isMobileDevice && document.documentElement.requestFullscreen) {
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'btn secondary-btn fullscreen-btn';
+        fullscreenBtn.textContent = 'Fullscreen';
+        fullscreenBtn.style.position = 'absolute';
+        fullscreenBtn.style.top = '10px';
+        fullscreenBtn.style.right = '10px';
+        fullscreenBtn.style.zIndex = '50';
+        fullscreenBtn.style.padding = '5px 10px';
+        fullscreenBtn.style.fontSize = '0.7rem';
+        
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(console.error);
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+            vibrateDevice(20);
+        });
+        
+        document.body.appendChild(fullscreenBtn);
     }
 }
 
