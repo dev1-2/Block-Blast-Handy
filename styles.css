@@ -29,7 +29,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
+    padding: 5px;
     overflow: hidden;
 }
 
@@ -44,11 +44,11 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 95vh;
+    height: 98vh;
 }
 
 header {
-    padding: 15px;
+    padding: 10px 15px;
     background-color: rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: space-between;
@@ -57,7 +57,7 @@ header {
 }
 
 h1 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--light-color);
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -68,13 +68,13 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 5px;
+    gap: 3px;
 }
 
 #score, #high-score {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    padding: 3px 10px;
+    padding: 2px 8px;
     border-radius: 50px;
     background-color: rgba(0, 0, 0, 0.2);
 }
@@ -83,7 +83,7 @@ main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 10px;
     overflow: hidden;
 }
 
@@ -91,7 +91,7 @@ main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
     overflow: hidden;
 }
 
@@ -99,21 +99,22 @@ main {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(8, 1fr);
-    gap: 4px;
+    gap: 3px;
     background-color: var(--grid-bg);
-    padding: 10px;
+    padding: 8px;
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     flex: 1;
     aspect-ratio: 1/1;
-    max-height: 60vh;
+    max-height: 65vh;
+    min-height: 280px;
 }
 
 .cell {
     background-color: var(--cell-bg);
-    border-radius: 6px;
+    border-radius: 4px;
     transition: all 0.2s ease;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.2);
     position: relative;
     overflow: hidden;
 }
@@ -126,7 +127,7 @@ main {
     width: 100%;
     height: 30%;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent);
-    border-radius: 6px 6px 0 0;
+    border-radius: 4px 4px 0 0;
 }
 
 .highlight {
@@ -150,13 +151,13 @@ main {
 .shape-tray {
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 15px;
-    padding: 10px;
+    padding: 8px;
     margin-top: auto;
 }
 
 .shape-tray h2 {
-    margin-bottom: 10px;
-    font-size: 1.1rem;
+    margin-bottom: 8px;
+    font-size: 1rem;
     text-align: center;
     color: var(--light-color);
 }
@@ -164,10 +165,11 @@ main {
 .shape-selection {
     display: flex;
     justify-content: space-around;
-    gap: 10px;
+    gap: 8px;
     overflow-x: auto;
     padding-bottom: 5px;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
 }
 
 .shape-selection::-webkit-scrollbar {
@@ -186,8 +188,8 @@ main {
 
 .shape {
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 8px;
+    border-radius: 8px;
+    padding: 6px;
     cursor: grab;
     transition: all 0.2s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -203,28 +205,35 @@ main {
 
 .shape-preview {
     display: grid;
-    grid-template-columns: repeat(4, 10px);
-    grid-template-rows: repeat(4, 10px);
+    grid-template-columns: repeat(4, 8px);
+    grid-template-rows: repeat(4, 8px);
     gap: 2px;
 }
 
+@media (min-width: 400px) {
+    .shape-preview {
+        grid-template-columns: repeat(4, 10px);
+        grid-template-rows: repeat(4, 10px);
+    }
+}
+
 .shape-preview .cell {
-    border-radius: 3px;
+    border-radius: 2px;
 }
 
 .controls {
     display: flex;
     justify-content: space-between;
     gap: 10px;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .btn {
-    padding: 10px 15px;
+    padding: 8px 12px;
     border: none;
     border-radius: 50px;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -278,10 +287,10 @@ main {
 
 .modal-content {
     background: linear-gradient(135deg, var(--primary-dark), var(--dark-color));
-    padding: 25px;
+    padding: 20px;
     border-radius: 20px;
     max-width: 90%;
-    width: 350px;
+    width: 320px;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     transform: scale(0.9);
@@ -293,32 +302,32 @@ main {
 }
 
 .modal h2 {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     color: var(--light-color);
-    font-size: 1.8rem;
+    font-size: 1.6rem;
 }
 
 #end-message {
-    font-size: 1.3rem;
-    margin-bottom: 25px;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
 }
 
 .modal-buttons {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
+    gap: 12px;
+    margin-top: 15px;
 }
 
 .instructions {
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .instructions p {
-    margin-bottom: 10px;
-    line-height: 1.6;
-    font-size: 0.9rem;
+    margin-bottom: 8px;
+    line-height: 1.5;
+    font-size: 0.85rem;
 }
 
 .level-up {
@@ -353,14 +362,14 @@ main {
 }
 
 .level-up h2 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     color: var(--accent-color);
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     text-shadow: 0 0 10px var(--accent-color);
 }
 
 .stars {
-    font-size: 3rem;
+    font-size: 2.5rem;
     color: gold;
     text-shadow: 0 0 20px gold;
     animation: starPulse 1s infinite alternate;
@@ -401,8 +410,8 @@ main {
 
 .drag-ghost .shape-preview {
     display: grid;
-    grid-template-columns: repeat(4, 12px);
-    grid-template-rows: repeat(4, 12px);
+    grid-template-columns: repeat(4, 10px);
+    grid-template-rows: repeat(4, 10px);
     gap: 2px;
 }
 
@@ -462,28 +471,73 @@ main {
 .particle:nth-child(9) { left: 90%; animation-duration: 20s; animation-delay: 0s; width: 6px; height: 6px; }
 .particle:nth-child(10) { left: 15%; animation-duration: 17s; animation-delay: 4s; }
 
-/* Responsive adjustments for very small screens */
+/* Responsive adjustments for different screen sizes */
 @media (max-height: 600px) {
     header {
-        padding: 10px;
+        padding: 8px;
     }
     
     h1 {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
     
     .grid {
-        max-height: 50vh;
+        max-height: 55vh;
+        min-height: 200px;
     }
     
     .shape-preview {
-        grid-template-columns: repeat(4, 8px);
-        grid-template-rows: repeat(4, 8px);
+        grid-template-columns: repeat(4, 7px);
+        grid-template-rows: repeat(4, 7px);
+        gap: 1px;
     }
     
     .btn {
-        padding: 8px 12px;
+        padding: 6px 10px;
+        font-size: 0.75rem;
+    }
+    
+    .shape-tray h2 {
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+}
+
+@media (max-width: 350px) {
+    .game-container {
+        border-radius: 15px;
+    }
+    
+    header {
+        padding: 6px 10px;
+    }
+    
+    h1 {
+        font-size: 1.2rem;
+    }
+    
+    #score, #high-score {
         font-size: 0.8rem;
+        padding: 2px 6px;
+    }
+    
+    .shape-preview {
+        grid-template-columns: repeat(4, 6px);
+        grid-template-rows: repeat(4, 6px);
+        gap: 1px;
+    }
+    
+    .shape {
+        padding: 4px;
+    }
+    
+    .controls {
+        margin-top: 8px;
+    }
+    
+    .btn {
+        padding: 6px 8px;
+        font-size: 0.7rem;
     }
 }
 
@@ -513,4 +567,18 @@ body.dragging {
 
 .clearing {
     animation: clear 0.5s ease-out forwards;
+}
+
+/* Better touch feedback */
+.shape:active, .btn:active {
+    transform: scale(0.95);
+}
+
+/* Safe area for notched phones */
+@supports (padding: max(0px)) {
+    .game-container {
+        padding-left: max(10px, env(safe-area-inset-left));
+        padding-right: max(10px, env(safe-area-inset-right));
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+    }
 }
